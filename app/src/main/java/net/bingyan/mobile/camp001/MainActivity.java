@@ -27,45 +27,48 @@ public class MainActivity extends Activity {
                 findViewById(R.id.num7),
                 findViewById(R.id.num8),
                 findViewById(R.id.num9),
-        };//数字键盘
-        TextView equal = findViewById(R.id.equal);
-        TextView plus = findViewById(R.id.plus);
-        TextView minus = findViewById(R.id.minus);
-        TextView times = findViewById(R.id.times);
-        TextView divide = findViewById(R.id.divide);
-        TextView ac = findViewById(R.id.ac);
-        scanner = findViewById(R.id.scanner);
-        ac.setOnClickListener(view -> {
-            scanner.setText("");
+        };//数字键盘，将所有数字绑定到一个数组中，第n个元素就是数字n
+        TextView equal = findViewById(R.id.equal);//绑定 = 文本控件
+        TextView plus = findViewById(R.id.plus);//绑定➕
+        TextView minus = findViewById(R.id.minus);//绑定➖
+        TextView times = findViewById(R.id.times);//绑定✖️
+        TextView divide = findViewById(R.id.divide);//绑定➗
+        TextView ac = findViewById(R.id.ac);//绑定 AC清除
+        scanner = findViewById(R.id.scanner);//绑定显示算式的文本控件
+        ac.setOnClickListener(view -> {//设置 AC 按钮的点击事件
+            scanner.setText("");//清空算式的文本内容
         });
-        for (int i = 0; i < num.length; i++) {
-            int finalI = i;
-            num[i].setOnClickListener(v -> {
-                scanner.setText(scanner.getText().toString() + finalI);
+        for (int i = 0; i < num.length; i++) {//循环遍历数字键盘，为其绑定点击事件
+            int finalI = i;//数字键盘对应的数字
+            num[i].setOnClickListener(v -> {//设置点击事件
+                scanner.setText(scanner.getText().toString() + finalI);//在算式末尾加上该数字
             });
         }
-        plus.setOnClickListener(v -> {
-            String value = scanner.getText().toString();
-            scanner.setText(trimSign(value) + "+");
+        plus.setOnClickListener(v -> {//设置➕的点击事件
+            String value = scanner.getText().toString();//获取算式
+            scanner.setText(trimSign(value) + "+");//调用自己实现的trimSign函数去除末尾的符号，再加上+号，
+            // 避免重复点击运算符导致多个运算符在一块的问题
         });
-        minus.setOnClickListener(v -> {
+        minus.setOnClickListener(v -> {//设置➖的点击事件
             String value = scanner.getText().toString();
             scanner.setText(trimSign(value) + "-");
         });
-        times.setOnClickListener(v -> {
+        times.setOnClickListener(v -> {//设置✖️的点击事件
             String value = scanner.getText().toString();
             scanner.setText(trimSign(value) + "*");
         });
-        divide.setOnClickListener(v -> {
+        divide.setOnClickListener(v -> {//设置➗的点击事件
             String value = scanner.getText().toString();
             scanner.setText(trimSign(value) + "÷");
         });
 
-        equal.setOnClickListener(v -> {
-            scanner.setText(calculate(scanner.getText().toString()));
+        equal.setOnClickListener(v -> {//设置 = 的点击事件
+            String formula = scanner.getText().toString();//获取算式文本
+            scanner.setText(calculate(formula));//计算算式并显示结果
         });
     }
 
+    //去除末尾的运算符
     private String trimSign(String input){
         char ends = input.charAt(input.length()-1);
         switch (ends) {
@@ -78,6 +81,7 @@ public class MainActivity extends Activity {
         return input;
     }
 
+    //各个运算符的优先级
     private int priority(char c) {
         switch (c) {
             case '+':
@@ -92,6 +96,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    // 中缀表达式转逆波兰表达式
     private String calculate(String raw) {
         // 111 + 222 - 333 * 444 / 555
         // 采用逆波兰表达式计算
@@ -131,12 +136,14 @@ public class MainActivity extends Activity {
         while (!operatorStack.empty()) {
             numberStack.push(String.valueOf(operatorStack.pop()));
         }
+        //调用逆波兰表达式计算函数，返回计算结果
         return calculateRPN(numberStack).toString();
     }
 
+    // 计算逆波兰表达式并返回最终结果
     private Integer calculateRPN(Stack<String> stack) {
         Stack<Integer> numStack = new Stack<>();
-        Log.i("Stack", "calculateRPN: " + stack);
+        Log.i("Stack", "calculateRPN: " + stack);//打印逆波兰表达式
         for (String s : stack) {
             try {
                 int v = Integer.parseInt(s);

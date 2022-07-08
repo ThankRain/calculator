@@ -14,7 +14,7 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
-        <!--计算显示结果-->
+        <!--显示输入的数字&最终的结果-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -26,6 +26,15 @@
             android:padding="16dp"
             />
     </LinearLayout>
+
+    <!--底部键盘：垂直的线性布局-->
+    <!--  垂直线性布局（
+        水平的线性布局[ 7 8 9 + ]
+        水平的线性布局[ 4 5 6 - ]
+        水平的线性布局[ 1 2 3 * ]
+        水平的线性布局[ AC 0 = ➗ ]
+        ）
+        -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,6 +45,13 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="horizontal">
+            <!-- layout_width=0dp 设置宽度为0
+                 layout_height = match_parent 充满父布局的高度
+                 gravity = center 文本内容居中
+                 layout_weight = 1 将父布局指定方向上的空余的空间按照 1 的权重分配给TextView
+                 其余三个权重也都是1，那么每个组件分配到的宽度为父布局宽度的1/4
+                 textStyle = bold 设置文本样式为粗体，斜体 italic，正常 normal
+             -->
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
